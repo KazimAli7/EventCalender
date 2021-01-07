@@ -4,15 +4,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // eslint-disable-next-line import/extensions
 // eslint-disable-next-line import/no-unresolved
-import App from './App';
 
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import Main from './Routes/Main';
 
 ReactDOM.render(
   <React.StrictMode>
     {' '}
-    <App />
+    <Main />
     {' '}
   </React.StrictMode>,
   document.getElementById('root'),
