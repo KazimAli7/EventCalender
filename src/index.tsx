@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
 // eslint-disable-next-line no-use-before-define
 import React from 'react';
