@@ -1,10 +1,6 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
 // eslint-disable-next-line no-use-before-define
 import React from 'react';
 import ReactDOM from 'react-dom';
-// eslint-disable-next-line import/extensions
-// eslint-disable-next-line import/no-unresolved
 
 import './index.css';
 import reportWebVitals from './reportWebVitals';

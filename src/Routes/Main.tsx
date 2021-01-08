@@ -1,6 +1,7 @@
-/* eslint-disable import/extensions */
-/* eslint-disable react/react-in-jsx-scope */
-// eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line no-use-before-define
+import React from 'react';
+
+// COMPONENTS
 import Calender from './Calender';
 
 function Main() {
