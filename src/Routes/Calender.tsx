@@ -17,7 +17,6 @@ function Calender() {
     <div className="container mx-auto p-12">
       <Calendar
         localizer={localizer}
-          // view="month"
         events={events}
         selectable
         showMultiDayTimes
