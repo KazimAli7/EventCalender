@@ -1,30 +1,33 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter, useHistory,
+} from 'react-router-dom';
 
-import Login from './Routes/auth/Login';
-import Register from './Routes/auth/Register';
-import Calender from './Routes/Calender';
+import AuthRoute from './Routes/AuthRoute';
+import DashboardRoute from './Routes/DashboardRoute';
 
 function App() {
   const loggedIn = useSelector((state: any) => state.notify.loggedIn);
-  console.log('checking loggedin value', loggedIn);
+  const history = useHistory();
+  // console.log('checking loggedin value', loggedIn);
+  useEffect(() => {
+    if (loggedIn) {
+      history.push('/register');
+    } else {
+      // history.push('/login');
+    }
+  }, [loggedIn]);
   return (
     <BrowserRouter>
       <div className="App">
         {
             loggedIn
               ? (
-                <div className="p-4">
-                  <Switch>
-                    <Route path="/" component={Calender} />
-                  </Switch>
-                </div>
+                <DashboardRoute />
               )
               : (
-                <Switch>
-                  <Route path="/" component={Login} />
-                  <Route path="/register" component={Register} />
-                </Switch>
+                <AuthRoute />
               )
           }
       </div>

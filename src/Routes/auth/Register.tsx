@@ -1,9 +1,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { FormEvent, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { FormEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 // import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import {
+  SET_CONFPASSWORD, SET_EMAIL, SET_FIRSTNAME, SET_LASTNAME, SET_PASSWORD,
+} from '../../redux/reducers/AuthReducer';
+import { VALUE_UPDATE } from '../../redux/reducers/NotifierReducer';
 
 // import {
 //   CreateUser, SetConfPassword, SetEmail, SetFirstName, SetLastName, SetPassword,
@@ -13,20 +18,41 @@ import { useHistory } from 'react-router-dom';
 
 function Register() {
   const history = useHistory();
-  //   const dispatch = useDispatch();
-  const firstName = useSelector((state: any) => state.auth.firstname);
-  const lastName = useSelector((state: any) => state.auth.lastname);
-  const email = useSelector((state: any) => state.auth.email);
-  const password = useSelector((state: any) => state.auth.password);
-  const confPassword = useSelector((state: any) => state.auth.confpassword);
-  const loggedIn = useSelector((state: any) => state.auth.loggedIn);
-  const autherror = useSelector((state: any) => state.auth.autherror);
+  const dispatch = useDispatch();
+  const {
+    firstName, lastName, email, password, confPassword,
+  } = useSelector((state: any) => state.auth);
 
-  useEffect(() => {
-    if (loggedIn) {
-      history.push('/main');
+  const { authError } = useSelector((state: any) => state.notify.authError);
+
+  // useEffect(() => {
+  //   if (loggedIn) {
+  //     history.push('/main');
+  //   }
+  // }, [loggedIn]);
+
+  const handleChange = (key: string, value: string) => {
+    if (key === 'email') {
+      dispatch(SET_EMAIL(value));
+      dispatch(VALUE_UPDATE());
     }
-  }, [loggedIn]);
+    if (key === 'password') {
+      dispatch(SET_PASSWORD(value));
+      dispatch(VALUE_UPDATE());
+    }
+    if (key === 'lname') {
+      dispatch(SET_LASTNAME(value));
+      dispatch(VALUE_UPDATE());
+    }
+    if (key === 'fname') {
+      dispatch(SET_FIRSTNAME(value));
+      dispatch(VALUE_UPDATE());
+    }
+    if (key === 'confpassword') {
+      dispatch(SET_CONFPASSWORD(value));
+      dispatch(VALUE_UPDATE());
+    }
+  };
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -78,7 +104,7 @@ function Register() {
               name="fname"
               placeholder="first name"
               value={firstName}
-            //   onChange={(e) => dispatch(SetFirstName(e.target.value))}
+              onChange={(e) => handleChange('fname', e.target.value)}
               autoComplete=""
               className="block w-full py-3 px-1 mt-2
                     text-gray-800 appearance-none
@@ -94,7 +120,7 @@ function Register() {
               name="lname"
               placeholder="last name"
               value={lastName}
-            //   onChange={(e) => dispatch(SetLastName(e.target.value))}
+              onChange={(e) => handleChange('lname', e.target.value)}
               autoComplete=""
               className="block w-full py-3 px-1 mt-2 mb-4
                     text-gray-800 appearance-none
@@ -109,7 +135,7 @@ function Register() {
               name="email"
               placeholder="e-mail address"
               value={email}
-            //   onChange={(e) => dispatch(SetEmail(e.target.value))}
+              onChange={(e) => handleChange('email', e.target.value)}
               autoComplete="email"
               className="block w-full py-3 px-1 mt-2
                     text-gray-800 appearance-none
@@ -124,7 +150,7 @@ function Register() {
               type="password"
               name="password"
               value={password}
-            //   onChange={(e) => dispatch(SetPassword(e.target.value))}
+              onChange={(e) => handleChange('password', e.target.value)}
               placeholder="password"
               autoComplete="current-password"
               className="block w-full py-3 px-1 mt-2 mb-4
@@ -140,7 +166,7 @@ function Register() {
               type="password"
               name="confpassword"
               value={confPassword}
-            //   onChange={(e) => dispatch(SetConfPassword(e.target.value))}
+              onChange={(e) => handleChange('confpassword', e.target.value)}
               placeholder="confirm password"
               autoComplete="current-password"
               className="block w-full py-3 px-1 mt-2 mb-4
@@ -159,17 +185,17 @@ function Register() {
               Register
             </button>
             {
-              autherror && autherror
+              authError && authError
                 ? (
                   <div className="text-red-500 mt-8 uppercase text-center font-small">
-                    {autherror}
+                    {authError}
                   </div>
                 ) : null
             }
             <div className="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
               Already registered?
               {' '}
-              <a href="login" onClick={() => history.push('/')} className=" btn p-0 px-1 underline">
+              <a href="/" onClick={() => history.push('/')} className=" btn p-0 px-1 underline">
                 Login
               </a>
               {' '}
