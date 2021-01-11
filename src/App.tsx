@@ -1,30 +1,34 @@
-// eslint-disable-next-line no-use-before-define
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useSelector } from 'react-redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import Login from './Routes/auth/Login';
+import Register from './Routes/auth/Register';
+import Calender from './Routes/Calender';
 
 function App() {
+  const loggedIn = useSelector((state: any) => state.notify.loggedIn);
+  console.log('checking loggedin value', loggedIn);
   return (
-    <div className="container py-4">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.js</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        {
+            loggedIn
+              ? (
+                <div className="p-4">
+                  <Switch>
+                    <Route path="/" component={Calender} />
+                  </Switch>
+                </div>
+              )
+              : (
+                <Switch>
+                  <Route path="/" component={Login} />
+                  <Route path="/register" component={Register} />
+                </Switch>
+              )
+          }
+      </div>
+    </BrowserRouter>
   );
 }
 

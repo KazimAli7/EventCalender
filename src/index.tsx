@@ -1,15 +1,19 @@
 // eslint-disable-next-line no-use-before-define
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
 import './index.css';
+import App from './App';
+import store from './redux/store';
 import reportWebVitals from './reportWebVitals';
-import Main from './Routes/Main';
 
 ReactDOM.render(
   <React.StrictMode>
     {' '}
-    <Main />
+    <Provider store={store}>
+      <App />
+    </Provider>
     {' '}
   </React.StrictMode>,
   document.getElementById('root'),
