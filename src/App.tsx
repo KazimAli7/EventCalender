@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  BrowserRouter, useHistory,
+  BrowserRouter,
 } from 'react-router-dom';
 
 import AuthRoute from './Routes/AuthRoute';
@@ -9,11 +9,11 @@ import DashboardRoute from './Routes/DashboardRoute';
 
 function App() {
   const loggedIn = useSelector((state: any) => state.notify.loggedIn);
-  const history = useHistory();
+  // const history = useHistory();
   // console.log('checking loggedin value', loggedIn);
   useEffect(() => {
     if (loggedIn) {
-      history.push('/register');
+      // history.push('/');
     } else {
       // history.push('/login');
     }

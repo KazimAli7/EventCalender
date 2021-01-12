@@ -94,7 +94,7 @@ function Login() {
             </button>
 
             {
-              authError && authError
+              authError
                 ? (
                   <div className="text-red-500 mt-8 uppercase text-center font-small">
                     {authError}

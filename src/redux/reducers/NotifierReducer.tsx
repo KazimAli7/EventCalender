@@ -14,6 +14,8 @@ export const VALUE_UPDATE = createAction('UPDATE_VALUE');
 export const LOGIN_FAIL = createAction<any, 'LOGIN_FAILED'>('LOGIN_FAILED');
 export const LOGUT_SUCCESS = createAction<any, 'LOGUT_SUCCESS'>('LOGUT_SUCCESS');
 export const LOGUT_FAILED = createAction<any, 'LOGUT_FAILED'>('LOGUT_FAILED');
+export const PASSWORD_ERROR = createAction<any, 'PASSWORD_ERROR'>('PASSWORD_ERROR');
+export const PASSWORD_LENGTH = createAction<any, 'PASSWORD_LENGTH'>('PASSWORD_LENGTH');
 
 function NotifierReducer(state = initialState, action: any) {
   switch (action.type) {
@@ -34,6 +36,28 @@ function NotifierReducer(state = initialState, action: any) {
         ...state,
         authError: '',
         loggedIn: false,
+      };
+    case 'PASSWORD_ERROR':
+      return {
+        ...state,
+        authError: 'Passwords do not match',
+      };
+    case 'USER_CREATED_SUCCESS':
+      return {
+        ...state,
+        authError: '',
+        loggedIn: true,
+      };
+    case 'USER_CREATED_FAILED':
+      return {
+        ...state,
+        authError: action.payload,
+        loggedIn: false,
+      };
+    case 'PASSWORD_LENGTH':
+      return {
+        ...state,
+        authError: 'Password should be 8 digit long',
       };
     default: return state;
   }

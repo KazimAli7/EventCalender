@@ -1,20 +1,12 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useSelector } from 'react-redux';
-// import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
   SET_CONFPASSWORD, SET_EMAIL, SET_FIRSTNAME, SET_LASTNAME, SET_PASSWORD,
+  CREATE_USER,
 } from '../../redux/reducers/AuthReducer';
-import { VALUE_UPDATE } from '../../redux/reducers/NotifierReducer';
-
-// import {
-//   CreateUser, SetConfPassword, SetEmail, SetFirstName, SetLastName, SetPassword,
-//   PasswordError,
-//   PasswordLength,
-// } from '../store/actions/Actions';
+import { PASSWORD_ERROR, VALUE_UPDATE, PASSWORD_LENGTH } from '../../redux/reducers/NotifierReducer';
 
 function Register() {
   const history = useHistory();
@@ -22,8 +14,7 @@ function Register() {
   const {
     firstName, lastName, email, password, confPassword,
   } = useSelector((state: any) => state.auth);
-
-  const { authError } = useSelector((state: any) => state.notify.authError);
+  const authError = useSelector((state: any) => state.notify.authError);
 
   // useEffect(() => {
   //   if (loggedIn) {
@@ -56,33 +47,32 @@ function Register() {
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    // const validationArray = [];
-    // if (password.length < 7) {
-    //   validationArray.push('password length');
-    // }
-    // if (confPassword.length < 7) {
-    //   validationArray.push('password length');
-    // }
-    // if (password !== confPassword) {
-    //   validationArray.push('password do not match');
-    //   dispatch(PasswordError());
-    // }
-    // if (validationArray.length > 0) {
-    //   if (password !== confPassword) {
-    //     validationArray.push('password do not match');
-    //     dispatch(PasswordError());
-    //   } else {
-    //     dispatch(PasswordLength());
-    //   }
-    // } else if (password === confPassword) {
-    //   const crediential = {
-    //     email,
-    //     password,
-    //     firstName,
-    //     lastName,
-    //   };
-    //   dispatch(CreateUser(crediential));
-    // }
+    const validationArray = [];
+    if (password.length <= 7) {
+      validationArray.push('password length');
+    }
+    if (confPassword.length <= 7) {
+      validationArray.push('password length');
+    }
+    if (password !== confPassword) {
+      validationArray.push('password do not match');
+      dispatch(PASSWORD_ERROR('PASSWORD_ERROR'));
+    }
+    if (validationArray.length > 0) {
+      if (password !== confPassword) {
+        dispatch(PASSWORD_ERROR('PASSWORD_ERROR'));
+      } else {
+        dispatch(PASSWORD_LENGTH('Password should be 8 digit long'));
+      }
+    } else if (password === confPassword) {
+      const crediential = {
+        email,
+        password,
+        firstName,
+        lastName,
+      };
+      dispatch(CREATE_USER(crediential));
+    }
   };
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -185,7 +175,7 @@ function Register() {
               Register
             </button>
             {
-              authError && authError
+              authError
                 ? (
                   <div className="text-red-500 mt-8 uppercase text-center font-small">
                     {authError}

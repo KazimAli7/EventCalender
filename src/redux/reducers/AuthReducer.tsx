@@ -13,6 +13,7 @@ export const SET_FIRSTNAME = createAction<string, 'set_firstName'>('set_firstNam
 export const SET_LASTNAME = createAction<string, 'set_lastName'>('set_lastName');
 export const SET_CONFPASSWORD = createAction<string, 'set_confpassword'>('set_confpassword');
 export const LOGIN_USER = createAction<any, 'login_user'>('login_user');
+export const CREATE_USER = createAction<any, 'create_user'>('create_user');
 
 // const initialState = { value: 0 } as CounterState;
 export interface AuthState {
