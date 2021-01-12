@@ -1,14 +1,36 @@
 /* eslint-disable require-yield */
-import { call, put, takeLatest } from 'redux-saga/effects';
+import {
+  call, put, takeEvery, takeLatest,
+} from 'redux-saga/effects';
 
-import { CREATE_USER, LOGIN_USER } from '../../services/firebase_api';
+import { CREATE_USER, LOGIN_CHECK, LOGIN_USER } from '../../services/firebase_api';
+
+function* checkLogin() {
+  try {
+    const apiResponse = yield call(LOGIN_CHECK);
+    if (apiResponse) {
+      sessionStorage.setItem('authToken', apiResponse);
+      yield put({
+        type: 'AUTH_DO_EXIST',
+        payload: apiResponse,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'AUTH_NOT_EXIST',
+      payload: error,
+    });
+  }
+}
 
 function* fetchUser(action: any) {
   try {
     const apiResponse = yield call(LOGIN_USER, action.payload);
     if (apiResponse) {
+      sessionStorage.setItem('authToken', apiResponse);
       yield put({
         type: 'LOGIN_SUCCESS',
+        payload: apiResponse,
       });
     } else {
       yield put({
@@ -46,6 +68,7 @@ function* createUser(action: any) {
 }
 
 export default function* root() {
+  yield takeEvery('LOGIN_CHECK', checkLogin);
   yield takeLatest('login_user', fetchUser);
   yield takeLatest('create_user', createUser);
 }

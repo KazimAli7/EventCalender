@@ -14,13 +14,22 @@ interface REGISTER {
   lastName: string,
 }
 
+export const LOGIN_CHECK = async () => {
+  try {
+    const result = await firebase.auth().currentUser;
+    return result?.uid;
+  } catch (error) {
+    return false;
+  }
+};
+
 export const LOGIN_USER = async (crediential : LOGINS) => {
   try {
     const result = await firebase.auth().signInWithEmailAndPassword(
       crediential.email,
       crediential.password,
     );
-    return result;
+    return result.user?.uid;
   } catch (error) {
     return false;
   }
