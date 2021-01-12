@@ -1,11 +1,7 @@
 import { NavLink } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
-// import { LogOut } from '../store/actions/Actions';
 
 function SignedInLink() {
-//   const dispatch = useDispatch();
   const handleClick = () => {
-    // dispatch(LogOut());
   };
   return (
     <ul>

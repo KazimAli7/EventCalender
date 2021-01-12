@@ -15,13 +15,6 @@ function Register() {
     firstName, lastName, email, password, confPassword,
   } = useSelector((state: any) => state.auth);
   const authError = useSelector((state: any) => state.notify.authError);
-
-  // useEffect(() => {
-  //   if (loggedIn) {
-  //     history.push('/main');
-  //   }
-  // }, [loggedIn]);
-
   const handleChange = (key: string, value: string) => {
     if (key === 'email') {
       dispatch(SET_EMAIL(value));
@@ -167,7 +160,6 @@ function Register() {
             />
             <button
               type="submit"
-              // onSubmit={handleSubmit}
               className="w-full py-3 mt-10 bg-gray-800 rounded-sm
                     font-medium text-white uppercase
                     focus:outline-none hover:bg-gray-700 hover:shadow-none"

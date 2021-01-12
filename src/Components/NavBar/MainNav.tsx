@@ -1,11 +1,6 @@
-/* eslint-disable no-use-before-define */
-import React from 'react';
-
-// PACKAGES
 import { Link } from 'react-router-dom';
-import SignedInLink from './SignInNav';
 
-// import SignedOutLink from '../SignedOutLink';
+import SignedInLink from './SignInNav';
 
 function NavBar() {
   return (

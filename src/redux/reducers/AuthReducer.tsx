@@ -1,11 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-param-reassign */
 import { createAction, createReducer } from '@reduxjs/toolkit';
-
-function withPayloadType<T>() {
-  return (t: T) => ({ payload: t });
-}
 
 export const SET_EMAIL = createAction<string, 'set_email'>('set_email');
 export const SET_PASSWORD = createAction<string, 'set_password'>('set_password');
@@ -15,7 +8,6 @@ export const SET_CONFPASSWORD = createAction<string, 'set_confpassword'>('set_co
 export const LOGIN_USER = createAction<any, 'login_user'>('login_user');
 export const CREATE_USER = createAction<any, 'create_user'>('create_user');
 
-// const initialState = { value: 0 } as CounterState;
 export interface AuthState {
   email: string,
   password: string,
