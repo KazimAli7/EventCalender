@@ -1,9 +1,13 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable require-yield */
 import {
   call, put, takeEvery, takeLatest,
 } from 'redux-saga/effects';
 
-import { CREATE_USER, LOGIN_CHECK, LOGIN_USER } from '../../services/firebase_api';
+import {
+  ADD_EVENTDETAIL,
+  CREATE_USER, GET_EVENTS, LOGIN_CHECK, LOGIN_USER, LOGOUT_USER,
+} from '../../services/firebase_api';
 
 function* checkLogin() {
   try {
@@ -18,6 +22,21 @@ function* checkLogin() {
   } catch (error) {
     yield put({
       type: 'AUTH_NOT_EXIST',
+      payload: error,
+    });
+  }
+}
+
+function* logoutUser() {
+  try {
+    const apiResponse = yield call(LOGOUT_USER);
+    sessionStorage.removeItem('authToken');
+    yield put({
+      type: 'LOGUT_SUCCESS',
+    });
+  } catch (error) {
+    yield put({
+      type: 'LOGUT_FAILED',
       payload: error,
     });
   }
@@ -67,8 +86,39 @@ function* createUser(action: any) {
   }
 }
 
-export default function* root() {
+function* AddEvent(action: any) {
+  try {
+    const apiResponse = yield call(ADD_EVENTDETAIL, action.payload);
+    if (apiResponse) {
+      yield put({
+        type: 'EVENT_SUCCESS',
+        payload: apiResponse,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'EVENT_FAILED',
+      payload: error,
+    });
+  }
+}
+
+function* GetEvents(action: any) {
+  // try{
+  const apiResponse = yield call(GET_EVENTS, action.payload);
+  console.log('api response come here', apiResponse);
+  yield put({
+    type: 'EVENTS_DETAILS',
+    payload: apiResponse,
+  });
+  // } catch (error) {}
+}
+
+export default function* rootSaga() {
   yield takeEvery('LOGIN_CHECK', checkLogin);
+  yield takeEvery('GET_ALLEVENTS', GetEvents);
+  yield takeEvery('LOGUT_USER', logoutUser);
+  yield takeEvery('ADD_EVENT', AddEvent);
   yield takeLatest('login_user', fetchUser);
   yield takeLatest('create_user', createUser);
 }
