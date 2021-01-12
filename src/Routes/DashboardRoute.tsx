@@ -1,13 +1,17 @@
 import { Route, Switch } from 'react-router';
+import NavBar from '../Components/NavBar/MainNav';
 
-import Calender from './Calender';
+import Calender from './main/Calender';
 
 function DashboardRoute() {
   return (
-    <Switch>
-      <Route path="/" component={Calender} />
-      <Route path="/calender" exact component={Calender} />
-    </Switch>
+    <div>
+      <NavBar />
+      <Switch>
+        <Route path="/" component={Calender} />
+        <Route path="/calender" exact component={Calender} />
+      </Switch>
+    </div>
   );
 }
 

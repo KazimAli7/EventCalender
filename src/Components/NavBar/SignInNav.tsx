@@ -1,7 +1,12 @@
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { LOGUT_USER } from '../../redux/reducers/NotifierReducer';
 
 function SignedInLink() {
-  const handleClick = () => {
+  const dispatch = useDispatch();
+
+  const handleClick = async () => {
+    dispatch(LOGUT_USER());
   };
   return (
     <ul>
