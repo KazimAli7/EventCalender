@@ -1,3 +1,4 @@
+import moment from 'moment';
 import firebase from '../Firebase/firebase';
 
 interface AuthToken {
@@ -17,10 +18,11 @@ interface REGISTER {
 }
 
 interface EVENT_DETAILS {
-  EndDate: Date,
-  StartDate: Date,
-  EventTitle: String,
+  end: Date,
+  start: Date,
+  title: String,
   authToken: string,
+  CreatedOn: Date,
 }
 
 export const LOGIN_CHECK = async () => {
@@ -61,15 +63,6 @@ export const CREATE_USER = async (crediential : REGISTER) => {
         uid: result.user?.uid,
         CreatedOn: new Date(),
       });
-      // const MainResult = await firebase.firestore()
-      // .collection('Users').doc(result.user?.uid).set({
-      //   email: crediential.email,
-      //   firstName: crediential.firstName,
-      //   lastName: crediential.lastName,
-      //   password: crediential.password,
-      //   uid: result.user?.uid,
-      //   CreatedOn: new Date(),
-      // });
       return MainResult;
     }
     return result;
@@ -90,11 +83,11 @@ export const LOGOUT_USER = async () => {
 export const ADD_EVENTDETAIL = async (cred: EVENT_DETAILS) => {
   try {
     const result = await firebase.firestore().collection('Event_Details').add({
-      title: cred.EventTitle,
-      end: new Date(cred.EndDate),
-      start: new Date(cred.StartDate),
+      title: cred.title,
+      end: moment(cred.end).format('YYYY-MM-DD'),
+      start: moment(cred.start).format('YYYY-MM-DD'),
       user_id: cred.authToken,
-      CreatedOn: new Date(),
+      CreatedOn: moment().format('YYYY-MM-DD'),
     });
     const updateDoc = await result.update({
       id: result.id,
