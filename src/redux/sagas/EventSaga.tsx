@@ -1,14 +1,12 @@
 /* eslint-disable require-yield */
 /* eslint-disable no-console */
 import { takeEvery, takeLatest } from 'redux-saga/effects';
-// import { USER_API } from '../../services/axios_api';
 
 function* OpenEventModal() {
   console.log('action call check');
 }
 
 function* GetUsers() {
-  // const apiResponse = yield call(USER_API);
   console.log('action call check');
 }
 

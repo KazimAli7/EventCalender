@@ -87,37 +87,35 @@ function* createUser(action: any) {
 }
 
 function* AddEvent(action: any) {
-  const array: any = [];
-  console.log('dsadsad', action.payload);
-  array.push(action.payload);
-  // try {
-  //   const apiResponse = yield call(ADD_EVENTDETAIL, action.payload);
-  //   if (apiResponse) {
-  //     yield put({
-  //       type: 'EVENT_SUCCESS',
-  //       payload: apiResponse,
-  //     });
-  //   }
-  // } catch (error) {
-  //   yield put({
-  //     type: 'EVENT_FAILED',
-  //     payload: error,
-  //   });
-  // }
-  yield put({
-    type: 'EVENTS_DETAILS',
-    payload: array,
-  });
+  try {
+    const apiResponse = yield call(ADD_EVENTDETAIL, action.payload);
+    if (apiResponse) {
+      yield put({
+        type: 'EVENTS_DETAILS',
+        payload: action.payload,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: 'EVENT_FAILED',
+      payload: error,
+    });
+  }
 }
 
 function* GetEvents(action: any) {
-  // try{
-  // const apiResponse = yield call(GET_EVENTS, action.payload);
-  // yield put({
-  //   type: 'EVENTS_DETAILS',
-  //   payload: apiResponse,
-  // });
-  // } catch (error) {}
+  try {
+    const apiResponse = yield call(GET_EVENTS, action.payload);
+    yield put({
+      type: 'EVENTS_DETAILS',
+      payload: apiResponse,
+    });
+  } catch (error) {
+    yield put({
+      type: 'EVENT_FAILED',
+      payload: error,
+    });
+  }
 }
 
 export default function* rootSaga() {

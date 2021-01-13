@@ -25,13 +25,7 @@ export interface MainState {
 }
 
 const initialState : MainState = {
-  events: [
-    {
-      title: 'Point in Time Event',
-      start: moment().format('YYYY-MM-DD'),
-      end: moment().format('YYYY-MM-DD'),
-    },
-  ],
+  events: [],
   isOpen: false,
   title: '',
   start: new Date(),
@@ -70,6 +64,7 @@ const MainReducer = createReducer(initialState, (builder) => {
     .addCase(EVENTS_DETAILS, (state, action) => ({
       ...state,
       events: action.payload,
+      isOpen: false,
     }))
     .addDefaultCase((state: any) => state);
 });
