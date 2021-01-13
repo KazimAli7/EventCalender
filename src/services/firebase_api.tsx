@@ -1,4 +1,3 @@
-import moment from 'moment';
 import firebase from '../Firebase/firebase';
 
 interface AuthToken {
@@ -84,10 +83,10 @@ export const ADD_EVENTDETAIL = async (cred: EVENT_DETAILS) => {
   try {
     const result = await firebase.firestore().collection('Event_Details').add({
       title: cred.title,
-      end: moment(cred.end).format('YYYY-MM-DD'),
-      start: moment(cred.start).format('YYYY-MM-DD'),
+      end: cred.end,
+      start: cred.start,
       user_id: cred.authToken,
-      CreatedOn: moment().format('YYYY-MM-DD'),
+      CreatedOn: new Date(),
     });
     const updateDoc = await result.update({
       id: result.id,
@@ -104,4 +103,9 @@ export const GET_EVENTS = async (crediential: AuthToken) => {
     array.push(docs.data());
   });
   return array;
+};
+
+export const DELETE_EVENTS = async (crediential: string) => {
+  const result = await firebase.firestore().collection('Event_Details').doc(crediential).delete();
+  return result;
 };

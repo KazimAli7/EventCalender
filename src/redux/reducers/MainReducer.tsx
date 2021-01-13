@@ -1,8 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-param-reassign */
 import { createAction, createReducer } from '@reduxjs/toolkit';
-import moment from 'moment';
 
 export const OPEN_EVENTMODAL = createAction<boolean, 'OPEN_EVENTMODAL'>('OPEN_EVENTMODAL');
 export const CLOSE_EVENTMODAL = createAction<boolean, 'CLOSE_EVENTMODAL'>('CLOSE_EVENTMODAL');
@@ -11,9 +7,15 @@ export const START_DATE = createAction<string, 'START_DATE'>('START_DATE');
 export const END_DATE = createAction<string, 'END_DATE'>('END_DATE');
 export const TIME_SLOT = createAction<any, 'TIME_SLOT'>('TIME_SLOT');
 export const ADD_EVENT = createAction<any, 'ADD_EVENT'>('ADD_EVENT');
+export const DELETE_EVENT = createAction<string, 'DELETE_EVENT'>('DELETE_EVENT');
 export const EVENT_SUCCESS = createAction<any, 'EVENT_SUCCESS'>('EVENT_SUCCESS');
 export const GET_ALLEVENTS = createAction<any, 'GET_ALLEVENTS'>('GET_ALLEVENTS');
+export const SELECTED_EVENT = createAction<[], 'SELECTED_EVENT'>('SELECTED_EVENT');
 export const EVENTS_DETAILS = createAction<[], 'EVENTS_DETAILS'>('EVENTS_DETAILS');
+export const DUMMY_EVENT = createAction<[], 'DUMMY_EVENT'>('DUMMY_EVENT');
+export const OPEN_SIDEBAR = createAction<boolean, 'OPEN_SIDEBAR'>('OPEN_SIDEBAR');
+export const DELETE_SUCCESS = createAction<any, 'DELETE_SUCCESS'>('DELETE_SUCCESS');
+export const DELETE_FAILED = createAction<any, 'DELETE_FAILED'>('DELETE_FAILED');
 
 export interface MainState {
   events: any,
@@ -21,7 +23,9 @@ export interface MainState {
   title: string,
   start: Date,
   end: Date,
+  sideOpen: boolean,
   TimeSlot: [],
+  selectedEvent: [],
 }
 
 const initialState : MainState = {
@@ -30,7 +34,9 @@ const initialState : MainState = {
   title: '',
   start: new Date(),
   end: new Date(),
+  sideOpen: false,
   TimeSlot: [],
+  selectedEvent: [],
 };
 
 const MainReducer = createReducer(initialState, (builder) => {
@@ -55,7 +61,7 @@ const MainReducer = createReducer(initialState, (builder) => {
       ...state,
       isOpen: action.payload,
     }))
-    .addCase('EVENT_SUCCESS', (state, action) => ({
+    .addCase('EVENT_SUCCESS', (state) => ({
       ...state,
       isOpen: false,
       TimeSlot: [],
@@ -63,8 +69,32 @@ const MainReducer = createReducer(initialState, (builder) => {
     }))
     .addCase(EVENTS_DETAILS, (state, action) => ({
       ...state,
-      events: action.payload,
+      events:
+        action.payload.map((item : any) => ({
+          ...item,
+          start: item.start.toDate(),
+          end: item.end.toDate(),
+          CreatedOn: item.CreatedOn.toDate(),
+        })),
       isOpen: false,
+    }))
+    .addCase(DUMMY_EVENT, (state, action) => ({
+      ...state,
+      events: [...state.events, action.payload],
+      isOpen: false,
+    }))
+    .addCase(OPEN_SIDEBAR, (state, action) => ({
+      ...state,
+      sideOpen: action.payload,
+    }))
+    .addCase(SELECTED_EVENT, (state, action) => ({
+      ...state,
+      selectedEvent: action.payload,
+    }))
+    .addCase(DELETE_SUCCESS, (state, action) => ({
+      ...state,
+      sideOpen: false,
+      events: state.events.filter((item : any) => item.id !== action.payload),
     }))
     .addDefaultCase((state: any) => state);
 });
