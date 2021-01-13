@@ -5,26 +5,31 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 
 import {
-  END_DATE, OPEN_EVENTMODAL, START_DATE, TIME_SLOT, GET_ALLEVENTS,
+  END_DATE, OPEN_EVENTMODAL, START_DATE, TIME_SLOT, GET_ALLEVENTS, OPEN_SIDEBAR, SELECTED_EVENT,
 } from '../../redux/reducers/MainReducer';
 import AddModal from '../../Components/Modal/AddModal';
 
 const localizer = momentLocalizer(moment);
 function Calender() {
   const dispatch = useDispatch();
-  const { isOpen, events } = useSelector((state: any) => state.main);
+  const { isOpen, events, sideOpen } = useSelector((state: any) => state.main);
   const authToken = useSelector((state: any) => state.notify.authToken);
 
-  const selectingEvent = (value: any) => {
+  useEffect(() => {
+    dispatch(GET_ALLEVENTS(authToken));
+  }, []);
+
+  const selectingTime = (value: any) => {
     dispatch(OPEN_EVENTMODAL(!isOpen));
     dispatch(START_DATE(moment(value.start).format('YYYY-MM-DD')));
     dispatch(END_DATE(moment(value.end).format('YYYY-MM-DD')));
     dispatch(TIME_SLOT(value.slots));
   };
 
-  useEffect(() => {
-    dispatch(GET_ALLEVENTS(authToken));
-  }, []);
+  const selectingEvent = (value: any) => {
+    dispatch(SELECTED_EVENT(value));
+    dispatch(OPEN_SIDEBAR(!sideOpen));
+  };
   return (
     <div className="container mx-auto">
       <Calendar
@@ -34,7 +39,8 @@ function Calender() {
         showMultiDayTimes
         startAccessor="start"
         endAccessor="end"
-        onSelectSlot={selectingEvent}
+        onSelectSlot={selectingTime}
+        onSelectEvent={selectingEvent}
         style={{ height: 700 }}
       />
       {

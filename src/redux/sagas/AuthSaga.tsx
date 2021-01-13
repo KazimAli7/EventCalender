@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable require-yield */
 import {
   call, put, takeEvery, takeLatest,
 } from 'redux-saga/effects';
 
 import {
   ADD_EVENTDETAIL,
-  CREATE_USER, GET_EVENTS, LOGIN_CHECK, LOGIN_USER, LOGOUT_USER,
+  CREATE_USER, DELETE_EVENTS, GET_EVENTS, LOGIN_CHECK, LOGIN_USER, LOGOUT_USER,
 } from '../../services/firebase_api';
 
 function* checkLogin() {
@@ -91,7 +90,7 @@ function* AddEvent(action: any) {
     const apiResponse = yield call(ADD_EVENTDETAIL, action.payload);
     if (apiResponse) {
       yield put({
-        type: 'EVENTS_DETAILS',
+        type: 'DUMMY_EVENT',
         payload: action.payload,
       });
     }
@@ -118,6 +117,21 @@ function* GetEvents(action: any) {
   }
 }
 
+function* DeleteEvent(action: any) {
+  try {
+    const apiResponse = yield call(DELETE_EVENTS, action.payload);
+    yield put({
+      type: 'DELETE_SUCCESS',
+      payload: action.payload,
+    });
+  } catch (error) {
+    yield put({
+      type: 'DELETE_FAILED',
+      payload: error,
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield takeEvery('LOGIN_CHECK', checkLogin);
   yield takeEvery('GET_ALLEVENTS', GetEvents);
@@ -125,4 +139,5 @@ export default function* rootSaga() {
   yield takeEvery('ADD_EVENT', AddEvent);
   yield takeLatest('login_user', fetchUser);
   yield takeLatest('create_user', createUser);
+  yield takeLatest('DELETE_EVENT', DeleteEvent);
 }
