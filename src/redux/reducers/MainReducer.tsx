@@ -2,32 +2,40 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
 import { createAction, createReducer } from '@reduxjs/toolkit';
+import moment from 'moment';
 
 export const OPEN_EVENTMODAL = createAction<boolean, 'OPEN_EVENTMODAL'>('OPEN_EVENTMODAL');
 export const CLOSE_EVENTMODAL = createAction<boolean, 'CLOSE_EVENTMODAL'>('CLOSE_EVENTMODAL');
 export const ADD_TITLE = createAction<string, 'ADD_TITLE'>('ADD_TITLE');
-export const START_DATE = createAction<Date, 'START_DATE'>('START_DATE');
-export const END_DATE = createAction<Date, 'END_DATE'>('END_DATE');
+export const START_DATE = createAction<string, 'START_DATE'>('START_DATE');
+export const END_DATE = createAction<string, 'END_DATE'>('END_DATE');
 export const TIME_SLOT = createAction<any, 'TIME_SLOT'>('TIME_SLOT');
 export const ADD_EVENT = createAction<any, 'ADD_EVENT'>('ADD_EVENT');
 export const EVENT_SUCCESS = createAction<any, 'EVENT_SUCCESS'>('EVENT_SUCCESS');
 export const GET_ALLEVENTS = createAction<any, 'GET_ALLEVENTS'>('GET_ALLEVENTS');
+export const EVENTS_DETAILS = createAction<[], 'EVENTS_DETAILS'>('EVENTS_DETAILS');
 
 export interface MainState {
-  events: [],
+  events: any,
   isOpen: boolean,
-  EventTitle: string,
-  StartDate: Date,
-  EndDate: Date,
+  title: string,
+  start: Date,
+  end: Date,
   TimeSlot: [],
 }
 
 const initialState : MainState = {
-  events: [],
+  events: [
+    {
+      title: 'Point in Time Event',
+      start: moment().format('YYYY-MM-DD'),
+      end: moment().format('YYYY-MM-DD'),
+    },
+  ],
   isOpen: false,
-  EventTitle: '',
-  StartDate: new Date(),
-  EndDate: new Date(),
+  title: '',
+  start: new Date(),
+  end: new Date(),
   TimeSlot: [],
 };
 
@@ -39,15 +47,15 @@ const MainReducer = createReducer(initialState, (builder) => {
     }))
     .addCase(ADD_TITLE, (state, action) => ({
       ...state,
-      EventTitle: action.payload,
+      title: action.payload,
     }))
     .addCase(START_DATE, (state, action) => ({
       ...state,
-      StartDate: new Date(action.payload),
+      start: new Date(action.payload),
     }))
     .addCase(END_DATE, (state, action) => ({
       ...state,
-      EndDate: new Date(action.payload),
+      end: new Date(action.payload),
     }))
     .addCase(CLOSE_EVENTMODAL, (state, action) => ({
       ...state,
@@ -58,6 +66,10 @@ const MainReducer = createReducer(initialState, (builder) => {
       isOpen: false,
       TimeSlot: [],
       EventTitle: '',
+    }))
+    .addCase(EVENTS_DETAILS, (state, action) => ({
+      ...state,
+      events: action.payload,
     }))
     .addDefaultCase((state: any) => state);
 });

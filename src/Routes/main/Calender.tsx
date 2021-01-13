@@ -18,15 +18,25 @@ function Calender() {
   // const Users = useSelector((state: any) => state.notify);
   const selectingEvent = (value: any) => {
     dispatch(OPEN_EVENTMODAL(!isOpen));
-    dispatch(START_DATE(value.start));
-    dispatch(END_DATE(value.end));
+    // dispatch(START_DATE(new Date(value.start)));
+    // dispatch(END_DATE(new Date(value.end)));
+    dispatch(START_DATE(moment(value.start).format('YYYY-MM-DD')));
+    dispatch(END_DATE(moment(value.end).format('YYYY-MM-DD')));
     dispatch(TIME_SLOT(value.slots));
   };
 
   useEffect(() => {
     dispatch(GET_ALLEVENTS(authToken));
-  }, [events]);
+  }, []);
 
+  // const MonthEvent = (event: any) => (
+  //   <div>
+  //     <div>{event.start}</div>
+  //     <div>{event.name}</div>
+  //   </div>
+  // );
+
+  console.log('checking events here', events);
   return (
     <div className="container mx-auto">
       <Calendar
