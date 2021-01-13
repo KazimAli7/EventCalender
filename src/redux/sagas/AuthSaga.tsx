@@ -87,30 +87,36 @@ function* createUser(action: any) {
 }
 
 function* AddEvent(action: any) {
-  try {
-    const apiResponse = yield call(ADD_EVENTDETAIL, action.payload);
-    if (apiResponse) {
-      yield put({
-        type: 'EVENT_SUCCESS',
-        payload: apiResponse,
-      });
-    }
-  } catch (error) {
-    yield put({
-      type: 'EVENT_FAILED',
-      payload: error,
-    });
-  }
+  const array: any = [];
+  console.log('dsadsad', action.payload);
+  array.push(action.payload);
+  // try {
+  //   const apiResponse = yield call(ADD_EVENTDETAIL, action.payload);
+  //   if (apiResponse) {
+  //     yield put({
+  //       type: 'EVENT_SUCCESS',
+  //       payload: apiResponse,
+  //     });
+  //   }
+  // } catch (error) {
+  //   yield put({
+  //     type: 'EVENT_FAILED',
+  //     payload: error,
+  //   });
+  // }
+  yield put({
+    type: 'EVENTS_DETAILS',
+    payload: array,
+  });
 }
 
 function* GetEvents(action: any) {
   // try{
-  const apiResponse = yield call(GET_EVENTS, action.payload);
-  console.log('api response come here', apiResponse);
-  yield put({
-    type: 'EVENTS_DETAILS',
-    payload: apiResponse,
-  });
+  // const apiResponse = yield call(GET_EVENTS, action.payload);
+  // yield put({
+  //   type: 'EVENTS_DETAILS',
+  //   payload: apiResponse,
+  // });
   // } catch (error) {}
 }
 
