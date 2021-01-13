@@ -6,15 +6,15 @@ import { ADD_TITLE, CLOSE_EVENTMODAL, ADD_EVENT } from '../../redux/reducers/Mai
 function AddModal() : any {
   const dispatch = useDispatch();
   const {
-    isOpen, title, start, end,
+    isOpen, EventTitle, StartDate, EndDate,
   } = useSelector((state: any) => state.main);
   const authToken = useSelector((state: any) => state.notify.authToken);
 
   const handleSubmit = () => {
     const EventInfo = {
-      title,
-      start,
-      end,
+      EventTitle,
+      StartDate,
+      EndDate,
       authToken,
     };
     dispatch(ADD_EVENT(EventInfo));
@@ -33,7 +33,7 @@ function AddModal() : any {
                       id="title"
                       type="text"
                       name="event-title"
-                      value={title}
+                      value={EventTitle}
                       onChange={(e) => dispatch(ADD_TITLE(e.target.value))}
                       placeholder="Add event title"
                       className="block w-full py-3 px-1 mt-2 mb-4
@@ -43,11 +43,11 @@ function AddModal() : any {
                       required
                     />
                     <div>
-                      {moment(start).format('DD-MMMM-YYYY')}
+                      {moment(StartDate).format('DD-MMMM-YYYY')}
                       {' '}
                       -
                       {' '}
-                      {moment(end).format('DD-MMMM-YYYY')}
+                      {moment(EndDate).format('DD-MMMM-YYYY')}
                     </div>
                   </div>
                   <div className="flex items-center justify-between p-6 border-t border-solid border-gray-300 rounded-b">

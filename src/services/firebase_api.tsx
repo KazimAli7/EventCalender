@@ -90,25 +90,27 @@ export const LOGOUT_USER = async () => {
 export const ADD_EVENTDETAIL = async (cred: EVENT_DETAILS) => {
   try {
     const result = await firebase.firestore().collection('Event_Details').add({
-      title: cred.EventTitle,
-      end: new Date(cred.EndDate),
-      start: new Date(cred.StartDate),
+      EventTitle: cred.EventTitle,
+      EndDate: new Date(cred.EndDate),
+      StartDate: new Date(cred.StartDate),
       user_id: cred.authToken,
       CreatedOn: new Date(),
     });
     const updateDoc = await result.update({
-      id: result.id,
+      eventId: result.id,
     }).then(() => true);
     return updateDoc;
   } catch (error) {
     return false;
   }
 };
+
 export const GET_EVENTS = async (crediential: AuthToken) => {
-  const array : any = [];
-  const result = await firebase.firestore().collection('Event_Details').where('user_id', '==', crediential).get();
-  result.forEach((docs) => {
-    array.push(docs.data());
-  });
-  return array;
+  const result = await firebase.firestore().collection('Event_Details').where('user_id', '==', crediential).get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => doc.data());
+    });
+  console.log('result check here', result);
+  return true;
+// }
 };
