@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+// import {} from 'multiselect-react-dropdown'
 
 import { ADD_TITLE, CLOSE_EVENTMODAL, ADD_EVENT } from '../../redux/reducers/MainReducer';
 
