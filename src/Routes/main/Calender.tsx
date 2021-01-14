@@ -21,8 +21,8 @@ function Calender() {
 
   const selectingTime = (value: any) => {
     dispatch(OPEN_EVENTMODAL(!isOpen));
-    dispatch(START_DATE(moment(value.start).format('YYYY-MM-DD')));
-    dispatch(END_DATE(moment(value.end).format('YYYY-MM-DD')));
+    dispatch(START_DATE(moment(value.start).format('YYYY-MM-DD, h:mm:ss a')));
+    dispatch(END_DATE(moment(value.end).format('YYYY-MM-DD, h:mm:ss a')));
     dispatch(TIME_SLOT(value.slots));
   };
 

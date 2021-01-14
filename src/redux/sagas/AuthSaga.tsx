@@ -2,6 +2,7 @@
 import {
   call, put, takeEvery, takeLatest,
 } from 'redux-saga/effects';
+import { USER_API } from '../../services/axios_api';
 
 import {
   ADD_EVENTDETAIL,
@@ -132,7 +133,15 @@ function* DeleteEvent(action: any) {
   }
 }
 
+function* GETUSER() {
+  const apiResponse = yield call(USER_API);
+  yield put({
+    type: 'SET_USERS',
+    payload: apiResponse,
+  });
+}
 export default function* rootSaga() {
+  yield takeEvery('USER_APICALL', GETUSER);
   yield takeEvery('LOGIN_CHECK', checkLogin);
   yield takeEvery('GET_ALLEVENTS', GetEvents);
   yield takeEvery('LOGUT_USER', logoutUser);

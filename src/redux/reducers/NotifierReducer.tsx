@@ -23,10 +23,12 @@ export const LOGUT_SUCCESS = createAction<any, 'LOGUT_SUCCESS'>('LOGUT_SUCCESS')
 export const LOGUT_FAILED = createAction<any, 'LOGUT_FAILED'>('LOGUT_FAILED');
 export const PASSWORD_ERROR = createAction<any, 'PASSWORD_ERROR'>('PASSWORD_ERROR');
 export const PASSWORD_LENGTH = createAction<any, 'PASSWORD_LENGTH'>('PASSWORD_LENGTH');
-export const USER_APICALL = createAction<any, 'USER_APICALL'>('USER_APICALL');
+export const USER_APICALL = createAction('USER_APICALL');
+export const SET_USERS = createAction<any, 'SET_USERS'>('SET_USERS');
 export const ADD_EVENT = createAction<any, 'ADD_EVENT'>('ADD_EVENT');
 
 function NotifierReducer(state = initialState, action: any) {
+  // console.log('checking users', action);
   switch (action.type) {
     case 'SET_AUTH':
       return {
@@ -98,6 +100,11 @@ function NotifierReducer(state = initialState, action: any) {
       return {
         ...state,
         authError: 'Password should be 8 digit long',
+      };
+    case 'SET_USERS':
+      return {
+        ...state,
+        Users: action.payload,
       };
     case 'USER_APICALL':
       return {
